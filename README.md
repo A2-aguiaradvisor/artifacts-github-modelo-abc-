@@ -49,14 +49,14 @@ python3 build_modelo_abc.py [fonte.xlsx] [saida.xlsx]
 
 O script lê a planilha-fonte de consolidação, anonimiza (nomes + ×0,85), normaliza o balancete, monta o DePara, as eliminações, os quadros com fórmulas vivas e a CAPA — e roda uma **pré-verificação** (identidade contábil por empresa, cobertura de notas, trajetória das eliminações).
 
-## Power BI
+## Power BI (PBI-ready)
 
-Carregue as 4 tabelas nomeadas: `tbl_Balancete` (fato), `tbl_DePara` (dimensão de contas), `tbl_Eliminacao` (fato de consolidação), `tbl_Calendario` (731 dias prontos). Relacionamentos (3): `tbl_Calendario[Data] → tbl_Balancete[Data]` · `tbl_DePara[Conta] → tbl_Balancete[Conta]` · `tbl_Calendario[AnoMês] → tbl_Eliminacao[Período]`. Os quadros do Excel servem de gabarito visual para os dashboards.
+O Excel já sai pronto: tabelas nomeadas `tbl_Balancete`, `tbl_DePara`, `tbl_Eliminacao`, `tbl_Calendario` — carregue-as **sem Power Query**. Colunas `Data` (tipo data real) e `Fluxo` (movimento do mês; o saldo é YTD). Relacionamentos: `Calendario[Data] → Balancete[Data]`, `DePara[Conta] → Balancete[Conta]`, `Calendario[AnoMês] → Eliminacao[Período]`. Medidas DAX na coluna **Fluxo** (nunca `SUM(Saldo)` — saldo é semi-aditivo). Gabarito 2025: ROL Cons 112,5M · LL Cons 16,1M · EBITDA 20,8M · Check LL = 0.
 
 ## Particularidades documentadas
 
 - Eliminações rastreadas a partir de Mai/2025 (Jan/24–Abr/25 = combinado).
-- Conta de ajuste 29999999 (linha Lucros acumulados) neutraliza resultado do ano já apropriado no PL na origem — por isso o DePara tem 562 contas.
+- BETA apresenta resíduo de ~R$ 219 mil em Dez/24 na origem (contas fora do mapa na fonte) — o check do Balanço Dez/24 exibe o resíduo.
 - `INVESTIMENTOS` (caixa-alta) vs `Investimentos`: SUMIFS é case-insensitive — não renomear linhas.
 
 ---
